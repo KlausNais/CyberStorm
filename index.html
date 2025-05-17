@@ -3,553 +3,716 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudHost - Надежный хостинг для ваших проектов</title>
+    <title>CloudHost - Премиум хостинг для бизнеса</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Основные переменные цветов */
         :root {
-          --primary: #2563eb;  /* Синий (акцентные элементы) */
-          --primary-dark: #1e40af;
-          --secondary: #10b981; /* Зеленый (подтверждение) */
-          --dark: #1e293b;     /* Текст */
-          --light: #f8fafc;    /* Фон */
-          --gray: #94a3b8;     /* Второстепенный текст */
-          --danger: #ef4444;   /* Ошибки */
-          --orange: #f59e0b;   /* Оранжевый */
-          --purple: #8b5cf6;   /* Фиолетовый */
-          --pink: #ec4899;     /* Розовый */
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --danger: #ef4444;
         }
 
-        /* Сброс стилей и базовые настройки */
         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         body {
-          background-color: var(--light);
-          color: var(--dark);
-          line-height: 1.6;
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            scroll-behavior: smooth;
         }
 
         .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 1rem;
-        }
-
-        /* Типография */
-        h1, h2, h3, h4 {
-          font-weight: 700;
-          line-height: 1.2;
-          margin-bottom: 1rem;
-        }
-
-        h1 { font-size: 2.5rem; }
-        h2 { font-size: 2rem; }
-        h3 { font-size: 1.5rem; }
-        p { margin-bottom: 1rem; }
-
-        .subtitle {
-          color: var(--gray);
-          font-size: 1.1rem;
-          max-width: 700px;
-          margin: 0 auto 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         /* Навигация */
         .navbar {
-          background: white;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          padding: 1rem 2rem;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          position: sticky;
-          top: 0;
-          z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
-          font-weight: 800;
-          font-size: 1.5rem;
-          color: var(--primary);
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
         }
 
         .nav-links {
-          display: flex;
-          gap: 2rem;
-          align-items: center;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
         }
 
         .nav-links a {
-          color: var(--dark);
-          text-decoration: none;
-          font-weight: 500;
-          transition: color 0.3s;
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
         }
 
         .nav-links a:hover {
-          color: var(--primary);
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         /* Герой-секция */
         .hero {
-          background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-          color: white;
-          padding: 6rem 2rem;
-          text-align: center;
-          position: relative;
-          overflow: hidden;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: cover;
         }
 
         .hero h1 {
-          font-size: 3rem;
-          margin-bottom: 1.5rem;
-          position: relative;
-          z-index: 2;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
         }
 
         .hero p {
-          font-size: 1.25rem;
-          max-width: 800px;
-          margin: 0 auto 2rem;
-          position: relative;
-          z-index: 2;
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            opacity: 0.9;
         }
 
-        .hero::after {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
-          background-size: cover;
-          opacity: 0.3;
+        /* Анимации */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Кнопки */
         .btn {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0.75rem 1.5rem;
-          border-radius: 0.375rem;
-          font-weight: 600;
-          text-decoration: none;
-          cursor: pointer;
-          transition: all 0.3s;
-          gap: 0.5rem;
-          position: relative;
-          z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.8rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn i {
-          font-size: 1rem;
+            font-size: 1rem;
+            transition: transform 0.3s;
         }
 
         .btn-primary {
-          background-color: var(--primary);
-          color: white;
-          border: 2px solid var(--primary);
+            background-color: white;
+            color: var(--primary);
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
         }
 
         .btn-primary:hover {
-          background-color: var(--primary-dark);
-          border-color: var(--primary-dark);
-          transform: translateY(-2px);
+            background-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-primary:hover i {
+            transform: translateX(3px);
         }
 
         .btn-outline {
-          background-color: transparent;
-          color: var(--primary);
-          border: 2px solid var(--primary);
+            background-color: transparent;
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .btn-outline:hover {
-          background-color: var(--primary);
-          color: white;
-          transform: translateY(-2px);
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: white;
+            transform: translateY(-3px);
         }
 
         .cta-buttons {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            position: relative;
         }
 
         /* Секции */
         section {
-          padding: 4rem 1rem;
+            padding: 6rem 1rem;
+        }
+
+        section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            text-align: center;
+            line-height: 1.7;
         }
 
         /* Карточки возможностей */
         .features {
-          background-color: #f9fafb;
+            background-color: #f9fafb;
         }
 
         .features-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
         }
 
         .feature-card {
-          background: white;
-          border-radius: 0.5rem;
-          padding: 2rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-          transition: all 0.3s ease;
-          border: 1px solid #e2e8f0;
-          text-align: center;
-          border-top: 3px solid var(--primary);
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--primary);
         }
 
         .feature-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
         }
 
         .feature-card i {
-          font-size: 2.5rem;
-          margin-bottom: 1.5rem;
-          color: var(--primary);
-          background: rgba(37, 99, 235, 0.1);
-          width: 80px;
-          height: 80px;
-          line-height: 80px;
-          border-radius: 50%;
-          display: inline-block;
-          transition: all 0.3s;
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: all 0.4s;
         }
 
         .feature-card:hover i {
-          background: var(--primary);
-          color: white;
+            transform: rotateY(180deg);
+            background: var(--primary);
+            color: white;
         }
 
         .feature-card h3 {
-          margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .feature-card p {
+            color: var(--gray);
+            line-height: 1.7;
         }
 
         /* Специфичные стили для разных типов карточек */
-        .feature-card.security {
-          border-top-color: var(--secondary);
-        }
+        .feature-card.security::before { background: var(--secondary); }
+        .feature-card.security i { color: var(--secondary); background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); }
+        .feature-card.security:hover i { background: var(--secondary); }
 
-        .feature-card.security i {
-          color: var(--secondary);
-          background: rgba(16, 185, 129, 0.1);
-        }
+        .feature-card.speed::before { background: var(--accent); }
+        .feature-card.speed i { color: var(--accent); background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); }
+        .feature-card.speed:hover i { background: var(--accent); }
 
-        .feature-card.security:hover i {
-          background: var(--secondary);
-        }
-
-        .feature-card.speed {
-          border-top-color: var(--orange);
-        }
-
-        .feature-card.speed i {
-          color: var(--orange);
-          background: rgba(245, 158, 11, 0.1);
-        }
-
-        .feature-card.speed:hover i {
-          background: var(--orange);
-        }
-
-        .feature-card.support {
-          border-top-color: var(--purple);
-        }
-
-        .feature-card.support i {
-          color: var(--purple);
-          background: rgba(139, 92, 246, 0.1);
-        }
-
-        .feature-card.support:hover i {
-          background: var(--purple);
-        }
-
-        .feature-card.management {
-          border-top-color: var(--pink);
-        }
-
-        .feature-card.management i {
-          color: var(--pink);
-          background: rgba(236, 72, 153, 0.1);
-        }
-
-        .feature-card.management:hover i {
-          background: var(--pink);
-        }
+        .feature-card.support::before { background: #8b5cf6; }
+        .feature-card.support i { color: #8b5cf6; background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%); }
+        .feature-card.support:hover i { background: #8b5cf6; }
 
         /* Тарифные планы */
         .pricing {
-          background-color: white;
+            background-color: white;
         }
 
         .plans-container {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .plan-card {
-          background: white;
-          border-radius: 0.5rem;
-          padding: 2rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-          transition: all 0.3s;
-          border: 1px solid #e2e8f0;
-          display: flex;
-          flex-direction: column;
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
         .plan-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
         .plan-card.popular {
-          border: 2px solid var(--primary);
-          position: relative;
+            border: 2px solid var(--primary);
+            transform: scale(1.02);
+        }
+
+        .plan-card.popular:hover {
+            transform: scale(1.02) translateY(-10px);
         }
 
         .popular-badge {
-          position: absolute;
-          top: -0.75rem;
-          right: 1rem;
-          background: var(--primary);
-          color: white;
-          padding: 0.25rem 1rem;
-          border-radius: 9999px;
-          font-size: 0.75rem;
-          font-weight: 700;
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .plan-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
         }
 
         .plan-price {
-          font-size: 2.5rem;
-          font-weight: 800;
-          margin: 1rem 0;
-          color: var(--dark);
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 1rem 0;
+            color: var(--dark);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
         }
 
         .plan-price span {
-          font-size: 1rem;
-          font-weight: normal;
-          color: var(--gray);
+            font-size: 1rem;
+            font-weight: normal;
+            color: var(--gray);
+            margin-top: 0.5rem;
+            margin-left: 0.3rem;
         }
 
         .plan-features {
-          list-style: none;
-          margin: 2rem 0;
-          flex-grow: 1;
+            list-style: none;
+            margin: 2rem 0;
+            flex-grow: 1;
         }
 
         .plan-features li {
-          margin-bottom: 0.75rem;
-          display: flex;
-          align-items: center;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
 
         .plan-features li::before {
-          content: "✓";
-          color: var(--secondary);
-          margin-right: 0.5rem;
-          font-weight: bold;
+            content: "✓";
+            color: var(--secondary);
+            margin-right: 0.8rem;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .plan-card .btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border-radius: 0.5rem;
         }
 
         /* Отзывы */
         .testimonials {
-          background-color: #f9fafb;
+            background-color: #f9fafb;
         }
 
         .testimonials-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
         .testimonial-card {
-          background: white;
-          border-radius: 0.5rem;
-          padding: 2rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-          transition: all 0.3s ease;
-          border: 1px solid #e2e8f0;
-          position: relative;
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            position: relative;
         }
 
         .testimonial-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
         }
 
         .testimonial-card::before {
-          content: """;
-          font-family: Georgia, serif;
-          font-size: 4rem;
-          color: var(--primary);
-          opacity: 0.1;
-          position: absolute;
-          top: 10px;
-          left: 20px;
-          line-height: 1;
+            content: """;
+            font-family: Georgia, serif;
+            font-size: 5rem;
+            color: var(--primary);
+            opacity: 0.1;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            line-height: 1;
         }
 
         .rating {
-          color: #fbbf24;
-          margin-bottom: 1rem;
+            color: #fbbf24;
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
         }
 
         .testimonial-card p {
-          font-style: italic;
-          color: var(--dark);
-          margin-bottom: 1.5rem;
-          position: relative;
-          z-index: 1;
+            font-style: italic;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.7;
         }
 
         .author {
-          display: flex;
-          flex-direction: column;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .author strong {
-          color: var(--dark);
-          font-weight: 600;
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
         }
 
-        .author span {
-          color: var(--gray);
-          font-size: 0.9rem;
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-info strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .author-info span {
+            color: var(--gray);
+            font-size: 0.9rem;
         }
 
         /* CTA секция */
         .cta-section {
-          background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-          color: white;
-          text-align: center;
-          padding: 4rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: cover;
         }
 
         .cta-section h2 {
-          margin-bottom: 1rem;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
         }
 
         .cta-section p {
-          max-width: 600px;
-          margin: 0 auto 2rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            position: relative;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .cta-section .btn {
+            position: relative;
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
         }
 
         /* Футер */
         footer {
-          background: var(--dark);
-          color: white;
-          padding: 3rem 1rem;
+            background: var(--dark);
+            color: white;
+            padding: 5rem 1rem 2rem;
         }
 
         .footer-content {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
         }
 
         .footer-column h3 {
-          color: white;
-          margin-bottom: 1.5rem;
-          font-size: 1.25rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 2px;
         }
 
         .footer-links {
-          list-style: none;
+            list-style: none;
         }
 
         .footer-links li {
-          margin-bottom: 0.75rem;
+            margin-bottom: 1rem;
         }
 
         .footer-links a {
-          color: var(--gray);
-          text-decoration: none;
-          transition: color 0.3s;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
         }
 
         .footer-links a:hover {
-          color: white;
+            color: white;
+            transform: translateX(5px);
         }
 
         .footer-links i {
-          width: 1rem;
+            width: 1rem;
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
         }
 
         .copyright {
-          text-align: center;
-          margin-top: 3rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
-          color: var(--gray);
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--gray);
+            font-size: 0.9rem;
         }
 
         /* Адаптивность */
+        @media (max-width: 992px) {
+            section {
+                padding: 5rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+
         @media (max-width: 768px) {
-          .navbar {
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem;
-          }
-          
-          .nav-links {
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-          }
-          
-          .hero {
-            padding: 4rem 1rem;
-          }
-          
-          .hero h1 {
-            font-size: 2rem;
-          }
-          
-          .hero p {
-            font-size: 1rem;
-          }
-          
-          .cta-buttons {
-            flex-direction: column;
-            gap: 1rem;
-          }
-          
-          .btn {
-            width: 100%;
-          }
+            .navbar {
+                flex-direction: column;
+                gap: 1.5rem;
+                padding: 1.5rem;
+            }
+            
+            .nav-links {
+                flex-direction: column;
+                gap: 1.2rem;
+                width: 100%;
+            }
+            
+            .nav-links a::after {
+                display: none;
+            }
+            
+            .hero {
+                padding: 6rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            section h2 {
+                font-size: 2rem;
+            }
         }
 
         @media (max-width: 480px) {
-          .plans-container, .features-grid, .testimonials-grid {
-            grid-template-columns: 1fr;
-          }
-          
-          .plan-card, .feature-card, .testimonial-card {
-            padding: 1.5rem;
-          }
+            .plans-container, .features-grid, .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .plan-card, .feature-card, .testimonial-card {
+                padding: 2rem 1.5rem;
+            }
+            
+            .plan-price {
+                font-size: 2.5rem;
+            }
+            
+            .cta-section h2 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
@@ -563,7 +726,7 @@
         <div class="nav-links">
             <a href="#features">Возможности</a>
             <a href="#pricing">Тарифы</a>
-            <a href="#support">Поддержка</a>
+            <a href="#testimonials">Отзывы</a>
             <a href="#contacts">Контакты</a>
             <a href="/login" class="btn btn-outline">Войти</a>
         </div>
@@ -572,8 +735,8 @@
     <!-- Герой-секция -->
     <section class="hero">
         <div class="container">
-            <h1>Мощный хостинг для ваших амбиций</h1>
-            <p>99.9% аптайм, мгновенная поддержка и все необходимые инструменты для успешного проекта</p>
+            <h1>Профессиональный хостинг для вашего бизнеса</h1>
+            <p>Максимальная производительность, безопасность и 24/7 поддержка для ваших проектов любого масштаба</p>
             <div class="cta-buttons">
                 <a href="#pricing" class="btn btn-primary">
                     <i class="fas fa-rocket"></i> Выбрать тариф
@@ -588,32 +751,26 @@
     <!-- Преимущества -->
     <section id="features" class="features">
         <div class="container">
-            <h2>Почему выбирают нас</h2>
-            <p class="subtitle">Все, что нужно для успешного проекта</p>
+            <h2>Наши преимущества</h2>
+            <p class="subtitle">Мы предлагаем полный спектр услуг для надежного размещения ваших проектов с гарантией 99.9% аптайма</p>
             
             <div class="features-grid">
                 <div class="feature-card security">
                     <i class="fas fa-shield-alt"></i>
                     <h3>Максимальная безопасность</h3>
-                    <p>Защита от DDoS, автоматические бэкапы, бесплатные SSL-сертификаты и регулярные обновления безопасности</p>
+                    <p>Многоуровневая защита от DDoS, ежедневные автоматические бэкапы, бесплатные SSL-сертификаты и регулярные обновления безопасности</p>
                 </div>
                 
                 <div class="feature-card speed">
                     <i class="fas fa-tachometer-alt"></i>
-                    <h3>Молниеносная скорость</h3>
-                    <p>NVMe SSD диски, HTTP/3, кеширование и оптимизированное ПО для максимальной производительности</p>
+                    <h3>Скорость и надежность</h3>
+                    <p>Современные NVMe SSD диски, поддержка HTTP/3, встроенное кеширование и оптимизированное ПО для молниеносной загрузки ваших сайтов</p>
                 </div>
                 
                 <div class="feature-card support">
                     <i class="fas fa-headset"></i>
-                    <h3>Поддержка 24/7</h3>
-                    <p>Наши эксперты доступны круглосуточно через чат, телефон или тикет-систему</p>
-                </div>
-                
-                <div class="feature-card management">
-                    <i class="fas fa-sliders-h"></i>
-                    <h3>Удобное управление</h3>
-                    <p>Интуитивно понятная панель управления с одним кликом установки популярных CMS</p>
+                    <h3>Экспертная поддержка</h3>
+                    <p>Наши специалисты доступны 24/7 через онлайн-чат, телефон или тикет-систему. Среднее время ответа - менее 15 минут</p>
                 </div>
             </div>
         </div>
@@ -623,7 +780,7 @@
     <section id="pricing" class="pricing">
         <div class="container">
             <h2>Тарифные планы</h2>
-            <p class="subtitle">Выберите оптимальное решение для вашего проекта</p>
+            <p class="subtitle">Выберите оптимальное решение для вашего проекта. Все тарифы включают бесплатный тестовый период</p>
             
             <div class="plans-container">
                 <div class="plan-card">
@@ -632,24 +789,26 @@
                     <ul class="plan-features">
                         <li>10 ГБ SSD-памяти</li>
                         <li>1 сайт</li>
-                        <li>10 000 посещений</li>
+                        <li>До 10 000 посещений</li>
                         <li>Бесплатный SSL</li>
                         <li>Панель управления</li>
+                        <li>Техподдержка 24/7</li>
                     </ul>
                     <a href="/order/start" class="btn btn-outline">Заказать</a>
                 </div>
                 
                 <div class="plan-card popular">
-                    <div class="popular-badge">Популярный</div>
+                    <div class="popular-badge">Рекомендуем</div>
                     <h3>Бизнес</h3>
                     <div class="plan-price">999₽<span>/месяц</span></div>
                     <ul class="plan-features">
                         <li>30 ГБ SSD-памяти</li>
-                        <li>5 сайтов</li>
-                        <li>50 000 посещений</li>
+                        <li>До 5 сайтов</li>
+                        <li>До 50 000 посещений</li>
                         <li>Бесплатный SSL</li>
                         <li>Ежедневные бэкапы</li>
                         <li>Приоритетная поддержка</li>
+                        <li>Бесплатный перенос</li>
                     </ul>
                     <a href="/order/business" class="btn btn-primary">Заказать</a>
                 </div>
@@ -659,9 +818,9 @@
                     <div class="plan-price">1999₽<span>/месяц</span></div>
                     <ul class="plan-features">
                         <li>100 ГБ SSD-памяти</li>
-                        <li>∞ сайтов</li>
-                        <li>200 000 посещений</li>
-                        <li>Бесплатный SSL</li>
+                        <li>Неограниченно сайтов</li>
+                        <li>До 200 000 посещений</li>
+                        <li>Расширенная безопасность</li>
                         <li>Ежечасные бэкапы</li>
                         <li>Выделенный IP</li>
                         <li>VIP-поддержка</li>
@@ -673,10 +832,10 @@
     </section>
 
     <!-- Отзывы -->
-    <section class="testimonials">
+    <section id="testimonials" class="testimonials">
         <div class="container">
-            <h2>Отзывы наших клиентов</h2>
-            <p class="subtitle">Более 10,000 довольных пользователей</p>
+            <h2>Отзывы клиентов</h2>
+            <p class="subtitle">Более 15,000 довольных клиентов по всему миру доверяют нам свои проекты</p>
             
             <div class="testimonials-grid">
                 <div class="testimonial-card">
@@ -687,10 +846,13 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p>"После перехода на этот хостинг скорость моего сайта увеличилась в 3 раза. Поддержка действительно помогает 24/7, что очень важно для моего бизнеса."</p>
+                    <p>"После перехода на CloudHost скорость моего интернет-магазина увеличилась в 3 раза, что положительно сказалось на конверсии. Поддержка всегда на связи и решает любые вопросы."</p>
                     <div class="author">
-                        <strong>Александр Иванов</strong>
-                        <span>Владелец интернет-магазина</span>
+                        <div class="author-avatar">AI</div>
+                        <div class="author-info">
+                            <strong>Александр Иванов</strong>
+                            <span>Владелец интернет-магазина</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -702,10 +864,13 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
                     </div>
-                    <p>"Использую несколько лет для своих клиентов. Никаких нареканий - стабильная работа, понятная панель управления и адекватные цены."</p>
+                    <p>"Использую CloudHost для хостинга клиентских проектов уже более 3 лет. Стабильная работа, понятная панель управления и адекватные цены. Рекомендую всем веб-разработчикам."</p>
                     <div class="author">
-                        <strong>Елена Смирнова</strong>
-                        <span>Веб-разработчик</span>
+                        <div class="author-avatar">ES</div>
+                        <div class="author-info">
+                            <strong>Елена Смирнова</strong>
+                            <span>Веб-разработчик</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -717,10 +882,13 @@
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star-half-alt"></i>
                     </div>
-                    <p>"Очень доволен соотношением цена/качество. Когда возникла проблема с переносом сайта, техподдержка сделала все бесплатно и быстро."</p>
+                    <p>"Отличное соотношение цена/качество. Когда возникла проблема с переносом сайта, техподдержка сделала все бесплатно и быстро. Аптайм действительно 99.9% - за 2 года ни одного простоя."</p>
                     <div class="author">
-                        <strong>Дмитрий Петров</strong>
-                        <span>Блогер</span>
+                        <div class="author-avatar">DP</div>
+                        <div class="author-info">
+                            <strong>Дмитрий Петров</strong>
+                            <span>Блогер</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -731,7 +899,7 @@
     <section class="cta-section">
         <div class="container">
             <h2>Готовы начать?</h2>
-            <p>Зарегистрируйтесь сейчас и получите 30 дней бесплатного тестирования</p>
+            <p>Зарегистрируйтесь сейчас и получите 30 дней бесплатного тестирования с полным доступом ко всем функциям</p>
             <a href="/register" class="btn btn-primary">
                 <i class="fas fa-play"></i> Начать бесплатно
             </a>
@@ -739,35 +907,41 @@
     </section>
 
     <!-- Футер -->
-    <footer>
+    <footer id="contacts">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>CloudHost</h3>
-                    <p>Надежный хостинг для бизнеса и личных проектов с 2015 года</p>
+                    <p>Профессиональный хостинг для бизнеса с 2015 года. Гарантия качества и надежности.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
                 <div class="footer-column">
                     <h3>Услуги</h3>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-server"></i> Виртуальный хостинг</a></li>
-                        <li><a href="#"><i class="fas fa-microchip"></i> VPS</a></li>
-                        <li><a href="#"><i class="fas fa-hdd"></i> Выделенные серверы</a></li>
-                        <li><a href="#"><i class="fas fa-globe"></i> Регистрация доменов</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Виртуальный хостинг</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> VPS серверы</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Выделенные серверы</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Регистрация доменов</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Поддержка</h3>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-book"></i> База знаний</a></li>
-                        <li><a href="#"><i class="fas fa-question-circle"></i> Техническая поддержка</a></li>
-                        <li><a href="#"><i class="fas fa-bug"></i> Сообщить о проблеме</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> База знаний</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Техническая поддержка</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Сообщить о проблеме</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Статус серверов</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h3>Контакты</h3>
                     <ul class="footer-links">
-                        <li><a href="#"><i class="fas fa-envelope"></i> support@cloudhost.ru</a></li>
-                        <li><a href="#"><i class="fas fa-phone"></i> +7 (800) 123-45-67</a></li>
+                        <li><a href="mailto:support@cloudhost.ru"><i class="fas fa-envelope"></i> support@cloudhost.ru</a></li>
+                        <li><a href="tel:+78001234567"><i class="fas fa-phone"></i> +7 (800) 123-45-67</a></li>
                         <li><a href="#"><i class="fas fa-map-marker-alt"></i> Москва, ул. Примерная, 15</a></li>
                     </ul>
                 </div>
