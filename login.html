@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudHost - Вход и регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-dark: #2563eb;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --danger: #ef4444;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .auth-container {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z"></path></svg>');
+            background-size: cover;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            position: relative;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.8rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: relative;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .auth-tab.active {
+            color: white;
+        }
+
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+        }
+
+        .auth-content {
+            padding: 2rem;
+        }
+
+        .auth-form {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #f8fafc;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            background-color: white;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 2.3rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+        }
+
+        .btn-google {
+            background-color: white;
+            color: var(--dark);
+            border: 1px solid #e2e8f0;
+            margin-top: 1rem;
+        }
+
+        .btn-google:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+
+        .btn-google i {
+            color: #db4437;
+            margin-right: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 0 0.5rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .auth-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Анимация переключения форм */
+        .switch-enter-active, .switch-leave-active {
+            transition: all 0.4s ease;
+        }
+        .switch-enter, .switch-leave-to {
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 480px) {
+            .auth-container {
+                border-radius: 0.8rem;
+            }
+            
+            .auth-header {
+                padding: 1.5rem;
+            }
+            
+            .auth-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="logo">
+                <i class="fas fa-cloud"></i>
+                CloudHost
+            </div>
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="switchTab('login')">Вход</div>
+                <div class="auth-tab" onclick="switchTab('register')">Регистрация</div>
+            </div>
+        </div>
+        
+        <div class="auth-content">
+            <!-- Форма входа -->
+            <form id="login-form" class="auth-form active">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="Ваш email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Ваш пароль" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('login-password', this)"></i>
+                </div>
+                
+                <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <input type="checkbox" id="remember-me">
+                        <label for="remember-me" style="display: inline; margin-left: 0.5rem;">Запомнить меня</label>
+                    </div>
+                    <a href="#forgot-password" style="font-size: 0.9rem; color: var(--primary); text-decoration: none;">Забыли пароль?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    Войти в аккаунт
+                </button>
+                
+                <div class="divider">или</div>
+                
+                <button type="button" class="btn btn-google">
+                    <i class="fab fa-google"></i> Войти через Google
+                </button>
+                
+                <div class="auth-footer">
+                    Нет аккаунта? <a href="#" onclick="switchTab('register'); return false;">Зарегистрируйтесь</a>
+                </div>
+            </form>
+            
+            <!-- Форма регистрации -->
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="register-name">Имя</label>
+                    <input type="text" id="register-name" class="form-control" placeholder="Ваше имя" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" class="form-control" placeholder="Ваш email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" class="form-control" placeholder="Придумайте пароль" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('register-password', this)"></i>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-confirm-password">Подтвердите пароль</label>
+                    <input type="password" id="register-confirm-password" class="form-control" placeholder="Повторите пароль" required>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('register-confirm-password', this)"></i>
+                </div>
+                
+                <div class="form-group">
+                    <input type="checkbox" id="agree-terms" required>
+                    <label for="agree-terms" style="display: inline; margin-left: 0.5rem;">Я согласен с <a href="#" style="color: var(--primary);">условиями использования</a></label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">
+                    Зарегистрироваться
+                </button>
+                
+                <div class="divider">или</div>
+                
+                <button type="button" class="btn btn-google">
+                    <i class="fab fa-google"></i> Зарегистрироваться через Google
+                </button>
+                
+                <div class="auth-footer">
+                    Уже есть аккаунт? <a href="#" onclick="switchTab('login'); return false;">Войдите</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Переключение активной вкладки
+            document.querySelectorAll('.auth-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === (tabName === 'login' ? 'Вход' : 'Регистрация'));
+            });
+            
+            // Переключение активной формы
+            document.getElementById('login-form').classList.toggle('active', tabName === 'login');
+            document.getElementById('register-form').classList.toggle('active', tabName === 'register');
+        }
+        
+        function togglePassword(inputId, icon) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        }
+        
+        // Обработка отправки форм
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Вход выполнен! (заглушка)');
+            // Здесь должна быть реальная логика входа
+        });
+        
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('Пароли не совпадают!');
+                return;
+            }
+            
+            alert('Регистрация успешна! (заглушка)');
+            // Здесь должна быть реальная логика регистрации
+        });
+    </script>
+</body>
+</html>
