@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudHost - Надежный хостинг для ваших проектов</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Навигация -->
+    <nav class="navbar">
+        <a href="/" class="logo">CloudHost</a>
+        <div class="nav-links">
+            <a href="#features">Возможности</a>
+            <a href="#pricing">Тарифы</a>
+            <a href="#support">Поддержка</a>
+            <a href="#contacts">Контакты</a>
+            <a href="/login" class="btn btn-outline">Войти</a>
+        </div>
+    </nav>
+
+    <!-- Герой-секция -->
+    <section class="hero">
+        <div class="container">
+            <h1>Мощный хостинг для ваших амбиций</h1>
+            <p>99.9% аптайм, мгновенная поддержка и все необходимые инструменты для успешного проекта</p>
+            <div class="cta-buttons">
+                <a href="#pricing" class="btn btn-primary">Выбрать тариф</a>
+                <a href="#demo" class="btn btn-outline">Демо-доступ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+<section id="features" class="features">
+    <div class="container">
+        <h2>Наши преимущества</h2>
+        <p class="subtitle">Все, что нужно для успешного проекта</p>
+        
+        <div class="features-grid">
+            <div class="feature-card security">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Максимальная безопасность</h3>
+                <p>Защита от DDoS, автоматические бэкапы, бесплатные SSL-сертификаты и регулярные обновления безопасности</p>
+            </div>
+            
+            <div class="feature-card speed">
+                <i class="fas fa-tachometer-alt"></i>
+                <h3>Молниеносная скорость</h3>
+                <p>NVMe SSD диски, HTTP/3, кеширование и оптимизированное ПО для максимальной производительности</p>
+            </div>
+            
+            <div class="feature-card support">
+                <i class="fas fa-headset"></i>
+                <h3>Поддержка 24/7</h3>
+                <p>Наши эксперты доступны круглосуточно через чат, телефон или тикет-систему</p>
+            </div>
+            
+            <div class="feature-card management">
+                <i class="fas fa-sliders-h"></i>
+                <h3>Удобное управление</h3>
+                <p>Интуитивно понятная панель управления с одним кликом установки популярных CMS</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Тарифы -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2>Тарифные планы</h2>
+            <p class="subtitle">Выберите оптимальное решение для вашего проекта</p>
+            
+            <div class="plans-container">
+                <div class="plan-card">
+                    <h3>Старт</h3>
+                    <div class="plan-price">499₽<span>/месяц</span></div>
+                    <ul class="plan-features">
+                        <li>10 ГБ SSD-памяти</li>
+                        <li>1 сайт</li>
+                        <li>10 000 посещений</li>
+                        <li>Бесплатный SSL</li>
+                        <li>Панель управления</li>
+                    </ul>
+                    <a href="/order/start" class="btn btn-outline">Заказать</a>
+                </div>
+                
+                <div class="plan-card popular">
+                    <div class="popular-badge">Популярный</div>
+                    <h3>Бизнес</h3>
+                    <div class="plan-price">999₽<span>/месяц</span></div>
+                    <ul class="plan-features">
+                        <li>30 ГБ SSD-памяти</li>
+                        <li>5 сайтов</li>
+                        <li>50 000 посещений</li>
+                        <li>Бесплатный SSL</li>
+                        <li>Ежедневные бэкапы</li>
+                        <li>Приоритетная поддержка</li>
+                    </ul>
+                    <a href="/order/business" class="btn btn-primary">Заказать</a>
+                </div>
+                
+                <div class="plan-card">
+                    <h3>Профессионал</h3>
+                    <div class="plan-price">1999₽<span>/месяц</span></div>
+                    <ul class="plan-features">
+                        <li>100 ГБ SSD-памяти</li>
+                        <li>∞ сайтов</li>
+                        <li>200 000 посещений</li>
+                        <li>Бесплатный SSL</li>
+                        <li>Ежечасные бэкапы</li>
+                        <li>Выделенный IP</li>
+                        <li>VIP-поддержка</li>
+                    </ul>
+                    <a href="/order/pro" class="btn btn-outline">Заказать</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Отзывы -->
+    <section class="testimonials">
+    <div class="container">
+        <h2>Отзывы наших клиентов</h2>
+        <p class="subtitle">Более 10,000 довольных пользователей</p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>"После перехода на этот хостинг скорость моего сайта увеличилась в 3 раза. Поддержка действительно помогает 24/7, что очень важно для моего бизнеса."</p>
+                <div class="author">
+                    <strong>Александр Иванов</strong>
+                    <span>Владелец интернет-магазина</span>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p>"Использую несколько лет для своих клиентов. Никаких нареканий - стабильная работа, понятная панель управления и адекватные цены."</p>
+                <div class="author">
+                    <strong>Елена Смирнова</strong>
+                    <span>Веб-разработчик</span>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <p>"Очень доволен соотношением цена/качество. Когда возникла проблема с переносом сайта, техподдержка сделала все бесплатно и быстро."</p>
+                <div class="author">
+                    <strong>Дмитрий Петров</strong>
+                    <span>Блогер</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Готовы начать?</h2>
+            <p>Зарегистрируйтесь сейчас и получите 30 дней бесплатного тестирования</p>
+            <a href="/register" class="btn btn-primary">Начать бесплатно</a>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>CloudHost</h3>
+                <p>Надежный хостинг для бизнеса и личных проектов с 2015 года</p>
+            </div>
+            <div class="footer-column">
+                <h3>Услуги</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Виртуальный хостинг</a></li>
+                    <li><a href="#">VPS</a></li>
+                    <li><a href="#">Выделенные серверы</a></li>
+                    <li><a href="#">Регистрация доменов</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Поддержка</h3>
+                <ul class="footer-links">
+                    <li><a href="#">База знаний</a></li>
+                    <li><a href="#">Техническая поддержка</a></li>
+                    <li><a href="#">Сообщить о проблеме</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Контакты</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> support@cloudhost.ru</li>
+                    <li><i class="fas fa-phone"></i> +7 (800) 123-45-67</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Москва, ул. Примерная, 15</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2023 CloudHost. Все права защищены.</p>
+        </div>
+    </footer>
+</body>
+</html>
