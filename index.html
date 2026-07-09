@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReallyWorld — Minecraft сервер и магазин привилегий</title>
+<meta name="description" content="ReallyWorld — Minecraft сервер. Онлайн-магазин привилегий, форум сообщества и ролевые миры на mc.reallyworld.ru">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#0b1912;
+    --bg-panel:#122a1e;
+    --surface:#17332475;
+    --surface-solid:#173324;
+    --slot:#0e2318;
+    --slot-border-lo:#3a2a1a;
+    --slot-border-hi:#6b4f30;
+    --wood:#5b4636;
+    --gold:#d9a441;
+    --gold-bright:#f4c96b;
+    --emerald:#3fbf8f;
+    --emerald-glow:#59e3ac;
+    --redstone:#c0503f;
+    --ink:#f3ecd9;
+    --ink-dim:#b9c6ba;
+    --ink-faint:#7f9385;
+    --line:#25412f;
+    --radius-block: 3px;
+    --font-pixel:'Press Start 2P', monospace;
+    --font-mono:'JetBrains Mono', monospace;
+    --font-body:'Manrope', sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg-deep);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(89,227,172,0.06), transparent 40%),
+      radial-gradient(circle at 85% 75%, rgba(217,164,65,0.07), transparent 45%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  .container{width:92%; max-width:1180px; margin:0 auto; padding:0 16px; position:relative; z-index:1;}
+
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  ::selection{ background:var(--gold); color:#1a1005; }
+
+  /* ---------- pixel utility ---------- */
+  .pixel-border{
+    border:3px solid var(--slot-border-hi);
+    box-shadow:
+      inset 0 0 0 3px var(--slot-border-lo),
+      0 6px 0 rgba(0,0,0,0.35);
+    image-rendering: pixelated;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--emerald-glow);
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:8px; height:8px;
+    background:var(--emerald-glow);
+    box-shadow:0 0 8px var(--emerald-glow);
+  }
+
+  h1,h2,h3{ font-weight:800; letter-spacing:-0.01em; }
+
+  .section-title{
+    font-size:clamp(1.7rem, 3vw, 2.5rem);
+    margin:14px 0 10px;
+  }
+  .section-lead{
+    color:var(--ink-dim);
+    max-width:640px;
+    font-size:1.02rem;
+  }
+
+  /* ---------- buttons ---------- */
+  .btn{
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:0.95rem;
+    padding:14px 26px;
+    border:none;
+    cursor:pointer;
+    border-radius:2px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+    position:relative;
+  }
+  .btn-gold{
+    background:var(--gold);
+    color:#231604;
+    box-shadow:0 4px 0 #8a611f, 0 4px 14px rgba(217,164,65,0.25);
+  }
+  .btn-gold:hover{ background:var(--gold-bright); transform:translateY(-2px); box-shadow:0 6px 0 #8a611f, 0 8px 20px rgba(217,164,65,0.3); }
+  .btn-gold:active{ transform:translateY(1px); box-shadow:0 2px 0 #8a611f; }
+
+  .btn-ghost{
+    background:transparent;
+    color:var(--ink);
+    border:2px solid var(--line);
+  }
+  .btn-ghost:hover{ border-color:var(--emerald-glow); color:var(--emerald-glow); }
+
+  .btn-mini{
+    font-family:var(--font-mono);
+    font-size:0.8rem;
+    padding:9px 14px;
+    background:var(--surface-solid);
+    color:var(--emerald-glow);
+    border:2px solid var(--line);
+  }
+  .btn-mini:hover{ border-color:var(--emerald-glow); }
+
+  /* ---------- header ---------- */
+  header{
+    position:fixed; top:0; width:100%; z-index:1000;
+    background:rgba(11,25,18,0.86);
+    backdrop-filter: blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  header .container{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; }
+
+  .logo{ display:flex; align-items:center; gap:10px; font-family:var(--font-pixel); font-size:0.85rem; }
+  .logo-mark{
+    width:26px; height:26px;
+    background:linear-gradient(160deg, var(--emerald), #1f6b4d 55%, #123c2b);
+    border:2px solid #0a1f16;
+    box-shadow: inset -3px -3px 0 rgba(0,0,0,0.3), inset 3px 3px 0 rgba(255,255,255,0.12);
+  }
+  .logo span{ color:var(--gold-bright); }
+
+  nav ul{ list-style:none; display:flex; gap:26px; }
+  nav a{ text-decoration:none; color:var(--ink-dim); font-size:0.92rem; font-weight:600; transition:color .2s; }
+  nav a:hover{ color:var(--gold-bright); }
+
+  .nav-toggle{ display:none; background:none; border:none; color:var(--ink); font-size:1.4rem; cursor:pointer; }
+
+  @media (max-width: 860px){
+    nav{ display:none; }
+    .nav-toggle{ display:block; }
+    header.open nav{
+      display:block; position:absolute; top:100%; left:0; width:100%;
+      background:var(--bg-panel); border-bottom:1px solid var(--line);
+    }
+    header.open nav ul{ flex-direction:column; padding:18px 20px; gap:16px; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding:150px 0 90px;
+    position:relative;
+    overflow:hidden;
+  }
+  .terrain{
+    position:absolute; left:0; right:0; bottom:0; height:120px;
+    display:flex; align-items:flex-end;
+    opacity:0.55;
+    z-index:0;
+    pointer-events:none;
+  }
+  .terrain span{
+    flex:1; background:linear-gradient(180deg, #234a30, #0b1912);
+    margin:0 1px;
+  }
+
+  .hero-grid{
+    display:grid; grid-template-columns: 1.15fr 0.85fr; gap:50px; align-items:center;
+    position:relative; z-index:1;
+  }
+  @media (max-width: 900px){ .hero-grid{ grid-template-columns:1fr; } }
+
+  .hero-title{
+    font-family:var(--font-pixel);
+    font-size:clamp(1.5rem, 3.6vw, 2.5rem);
+    line-height:1.5;
+    margin:18px 0 20px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+  }
+  .hero-title .accent{ color:var(--gold-bright); }
+
+  .hero-subtitle{ color:var(--ink-dim); font-size:1.08rem; max-width:520px; margin-bottom:32px; }
+
+  .hero-actions{ display:flex; flex-wrap:wrap; gap:16px; margin-bottom:40px; }
+
+  .hero-links{ display:flex; gap:18px; flex-wrap:wrap; }
+  .hero-links a{ display:flex; align-items:center; gap:8px; font-size:0.88rem; color:var(--ink-faint); text-decoration:none; }
+  .hero-links a:hover{ color:var(--emerald-glow); }
+
+  /* server status card */
+  .status-card{
+    background:var(--surface-solid);
+    border:3px solid var(--slot-border-hi);
+    box-shadow: inset 0 0 0 3px var(--slot-border-lo), 0 10px 0 rgba(0,0,0,0.3);
+    padding:28px;
+  }
+  .status-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+  .status-head h3{ font-size:1rem; color:var(--ink-dim); font-weight:600; }
+  .status-dot{ width:10px; height:10px; border-radius:50%; background:var(--emerald-glow); box-shadow:0 0 10px var(--emerald-glow); animation:blink 2s infinite; }
+  @keyframes blink{ 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+  .ip-row{
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--slot);
+    border:2px solid var(--line);
+    padding:14px 16px;
+    margin-bottom:16px;
+  }
+  .ip-row code{ font-family:var(--font-mono); font-size:1.05rem; color:var(--gold-bright); }
+
+  .status-metrics{ display:flex; gap:20px; }
+  .status-metrics div{ flex:1; }
+  .status-metrics .num{ font-family:var(--font-pixel); font-size:1.1rem; color:var(--emerald-glow); margin-bottom:6px; }
+  .status-metrics .lab{ font-size:0.8rem; color:var(--ink-faint); }
+
+  .note-small{ font-size:0.78rem; color:var(--ink-faint); margin-top:14px; font-family:var(--font-mono); }
+
+  /* ---------- steps ---------- */
+  .steps{ padding:90px 0; background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .steps-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; margin-top:44px; }
+  @media (max-width:800px){ .steps-grid{ grid-template-columns:1fr; } }
+  .step-card{ background:var(--surface-solid); border:2px solid var(--line); padding:26px; position:relative; }
+  .step-num{ font-family:var(--font-pixel); font-size:1.6rem; color:var(--gold); opacity:0.5; margin-bottom:14px; }
+  .step-card h3{ font-size:1.1rem; margin-bottom:8px; }
+  .step-card p{ color:var(--ink-dim); font-size:0.94rem; }
+  .step-card code{ font-family:var(--font-mono); color:var(--emerald-glow); background:var(--slot); padding:2px 6px; }
+
+  /* ---------- features ---------- */
+  .features{ padding:90px 0; }
+  .features-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:22px; margin-top:44px; }
+  .feature-card{ background:var(--surface-solid); border:2px solid var(--line); padding:24px; transition:border-color .2s, transform .2s; }
+  .feature-card:hover{ border-color:var(--emerald); transform:translateY(-4px); }
+  .feature-icon{ width:42px; height:42px; background:var(--slot); border:2px solid var(--line); display:flex; align-items:center; justify-content:center; margin-bottom:16px; font-size:1.2rem; }
+  .feature-card h3{ font-size:1.05rem; margin-bottom:8px; }
+  .feature-card p{ color:var(--ink-dim); font-size:0.92rem; }
+
+  /* ---------- privileges (signature section) ---------- */
+  .privileges{ padding:90px 0; background:var(--bg-panel); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+
+  .tier-track{
+    display:flex; gap:18px; overflow-x:auto; padding:50px 4px 24px;
+    scroll-snap-type:x proximity;
+  }
+  .tier-track::-webkit-scrollbar{ height:8px; }
+  .tier-track::-webkit-scrollbar-thumb{ background:var(--line); }
+
+  .tier-track::before{ content:none; }
+
+  .tier-rail{ position:relative; margin-top:10px; }
+  .tier-rail .line{
+    position:absolute; top:24px; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, var(--emerald), var(--gold));
+    opacity:0.35;
+  }
+
+  .tier-card{
+    scroll-snap-align:start;
+    min-width:230px; flex:0 0 230px;
+    background:var(--slot);
+    border:3px solid var(--slot-border-hi);
+    box-shadow: inset 0 0 0 3px var(--slot-border-lo);
+    padding:20px;
+    position:relative;
+  }
+  .tier-order{
+    position:absolute; top:-38px; left:0;
+    font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-faint);
+  }
+  .tier-gem{
+    width:34px; height:34px;
+    margin-bottom:14px;
+    border:2px solid rgba(0,0,0,0.4);
+  }
+  .tier-card h3{ font-family:var(--font-pixel); font-size:0.85rem; margin-bottom:14px; letter-spacing:0.02em; }
+  .tier-card ul{ list-style:none; margin-bottom:18px; }
+  .tier-card li{ font-size:0.82rem; color:var(--ink-dim); margin-bottom:8px; padding-left:14px; position:relative; }
+  .tier-card li::before{ content:'›'; position:absolute; left:0; color:var(--emerald-glow); }
+  .tier-card li code{ font-family:var(--font-mono); color:var(--gold-bright); font-size:0.78rem; }
+
+  .tier-price{ font-family:var(--font-mono); font-size:0.78rem; color:var(--ink-faint); margin-top:6px; }
+
+  .privileges-note{
+    margin-top:28px; font-size:0.85rem; color:var(--ink-faint);
+    border-left:3px solid var(--gold); padding-left:14px;
+  }
+
+  /* ---------- forum ---------- */
+  .forum{ padding:90px 0; }
+  .forum-stats{ display:flex; flex-wrap:wrap; gap:16px; margin:40px 0 44px; }
+  .forum-stat{ flex:1; min-width:130px; background:var(--surface-solid); border:2px solid var(--line); padding:20px; text-align:center; }
+  .forum-stat .n{ font-family:var(--font-pixel); font-size:1rem; color:var(--gold-bright); margin-bottom:8px; }
+  .forum-stat .l{ font-size:0.78rem; color:var(--ink-faint); }
+
+  .forum-categories{ display:grid; grid-template-columns:repeat(auto-fit, minmax(240px,1fr)); gap:18px; }
+  .cat-card{ background:var(--surface-solid); border-left:3px solid var(--emerald); border-top:2px solid var(--line); border-right:2px solid var(--line); border-bottom:2px solid var(--line); padding:20px; text-decoration:none; display:block; transition:transform .2s; }
+  .cat-card:hover{ transform:translateY(-3px); border-left-color:var(--gold); }
+  .cat-card h3{ font-size:1rem; margin-bottom:6px; color:var(--ink); }
+  .cat-card p{ font-size:0.85rem; color:var(--ink-dim); }
+
+  /* ---------- community cta ---------- */
+  .community{ padding:90px 0; text-align:center; }
+  .community h2{ margin-bottom:14px; }
+  .community p{ color:var(--ink-dim); max-width:520px; margin:0 auto 34px; }
+  .social-row{ display:flex; justify-content:center; gap:16px; flex-wrap:wrap; }
+  .social-row a{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 20px;
+    background:var(--surface-solid); border:2px solid var(--line);
+    text-decoration:none; color:var(--ink); font-weight:600; font-size:0.9rem;
+    transition:border-color .2s, color .2s;
+  }
+  .social-row a:hover{ border-color:var(--emerald-glow); color:var(--emerald-glow); }
+
+  /* ---------- footer ---------- */
+  footer{ background:#081310; border-top:1px solid var(--line); padding:70px 0 24px; }
+  .footer-grid{ display:grid; grid-template-columns:1.3fr 1fr 1fr 1.2fr; gap:36px; margin-bottom:50px; }
+  @media (max-width:900px){ .footer-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .footer-grid{ grid-template-columns:1fr; } }
+  .footer-col h4{ font-size:0.95rem; margin-bottom:16px; color:var(--gold-bright); }
+  .footer-col p, .footer-col li{ color:var(--ink-faint); font-size:0.85rem; }
+  .footer-col ul{ list-style:none; }
+  .footer-col li{ margin-bottom:10px; }
+  .footer-col a{ text-decoration:none; color:var(--ink-faint); }
+  .footer-col a:hover{ color:var(--emerald-glow); }
+  .footer-legal{ font-size:0.78rem; line-height:1.9; }
+
+  .footer-bottom{
+    border-top:1px solid var(--line); padding-top:22px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:0.78rem; color:var(--ink-faint);
+  }
+  .footer-bottom a{ text-decoration:none; color:var(--ink-faint); margin-left:16px; }
+  .footer-bottom a:hover{ color:var(--emerald-glow); }
+
+  [data-reveal]{ opacity:0; transform:translateY(18px); transition:opacity .5s ease, transform .5s ease; }
+  [data-reveal].in{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<header id="site-header">
+  <div class="container">
+    <div class="logo"><span class="logo-mark"></span>Really<span>World</span></div>
+    <nav>
+      <ul>
+        <li><a href="#home">Главная</a></li>
+        <li><a href="#privileges">Магазин</a></li>
+        <li><a href="https://f.reallyworld.ru/tags/%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0/" target="_blank" rel="noopener">Правила</a></li>
+        <li><a href="#features">Возможности</a></li>
+        <li><a href="https://f.reallyworld.ru" target="_blank" rel="noopener">Форум</a></li>
+        <li><a href="https://reallyworld.ru/support" target="_blank" rel="noopener">Поддержка</a></li>
+      </ul>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Меню">☰</button>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="terrain" id="terrain"></div>
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow">mc.reallyworld.ru · сезон открыт</span>
+      <h1 class="hero-title">ReallyWorld —<br>начало <span class="accent">новой эры</span></h1>
+      <p class="hero-subtitle">Огромные миры, живая экономика и сообщество, где можно стать кем угодно — хоть космонавтом. Подключайся и выбирай свою роль.</p>
+      <div class="hero-actions">
+        <a href="#privileges" class="btn btn-gold">Открыть магазин привилегий</a>
+        <a href="https://f.reallyworld.ru" target="_blank" rel="noopener" class="btn btn-ghost">Перейти на форум</a>
+      </div>
+      <div class="hero-links">
+        <a href="https://vk.com/reallyworlds" target="_blank" rel="noopener">VK-сообщество</a>
+        <a href="https://discord.gg/reallyworld" target="_blank" rel="noopener">Discord-сервер</a>
+        <a href="https://www.youtube.com/channel/UCb5oqCZ4AfmfXbgHsfei0tQ" target="_blank" rel="noopener">YouTube-канал</a>
+      </div>
+    </div>
+
+    <div class="status-card" data-reveal>
+      <div class="status-head">
+        <h3>Статус сервера</h3>
+        <span class="status-dot" aria-hidden="true"></span>
+      </div>
+      <div class="ip-row">
+        <code id="ipAddress">mc.reallyworld.ru</code>
+        <button class="btn-mini" id="copyIp">Копировать</button>
+      </div>
+      <div class="status-metrics">
+        <div>
+          <div class="num" id="onlineNum">— / 9000</div>
+          <div class="lab">Игроков онлайн</div>
+        </div>
+        <div>
+          <div class="num">1.16.5</div>
+          <div class="lab">Рекомендуемая версия</div>
+        </div>
+      </div>
+      <p class="note-small">Онлайн подставляется через API сервера — подключите свой эндпоинт в script.js.</p>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="container">
+    <span class="eyebrow">Три шага</span>
+    <h2 class="section-title">Как начать играть</h2>
+    <p class="section-lead">От запуска клиента до первой привилегии — коротким путём.</p>
+    <div class="steps-grid">
+      <div class="step-card" data-reveal>
+        <div class="step-num">01</div>
+        <h3>Подключись к серверу</h3>
+        <p>Запусти Minecraft <code>1.16.5</code>, добавь сервер и введи адрес <code>mc.reallyworld.ru</code>.</p>
+      </div>
+      <div class="step-card" data-reveal>
+        <div class="step-num">02</div>
+        <h3>Выбери роль</h3>
+        <p>Пройди регистрацию, изучи правила на форуме и выбери, кем быть в мире ReallyWorld.</p>
+      </div>
+      <div class="step-card" data-reveal>
+        <div class="step-num">03</div>
+        <h3>Возьми привилегию</h3>
+        <p>Загляни в магазин — от HERO до DRAGON, каждая привилегия наследует возможности предыдущей.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <span class="eyebrow">Возможности</span>
+    <h2 class="section-title">Почему остаются на ReallyWorld</h2>
+    <p class="section-lead">Живой мир, который держится не на донате, а на сообществе вокруг него.</p>
+    <div class="features-grid">
+      <div class="feature-card" data-reveal><div class="feature-icon">⛺</div><h3>Ролевые миры</h3><p>Свободный выбор образа жизни — от рядового жителя до собственной фракции.</p></div>
+      <div class="feature-card" data-reveal><div class="feature-icon">💬</div><h3>Активный форум</h3><p>Обсуждения, гайды и барахолка на f.reallyworld.ru — центр жизни сообщества.</p></div>
+      <div class="feature-card" data-reveal><div class="feature-icon">🛡️</div><h3>Приваты и защита</h3><p>Каждая привилегия даёт больше приватов — постройки защищены от посторонних.</p></div>
+      <div class="feature-card" data-reveal><div class="feature-icon">🪙</div><h3>Своя экономика</h3><p>Рилики и печеньки как внутриигровая валюта, аукцион и кейсы с ресурсами.</p></div>
+      <div class="feature-card" data-reveal><div class="feature-icon">🎙️</div><h3>Discord и VK</h3><p>Голосовые каналы, объявления и прямая связь с администрацией.</p></div>
+      <div class="feature-card" data-reveal><div class="feature-icon">🎬</div><h3>Медиа сообщества</h3><p>Обзоры и трансляции на YouTube-канале проекта.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="privileges" id="privileges">
+  <div class="container">
+    <span class="eyebrow">Магазин</span>
+    <h2 class="section-title">Лестница привилегий</h2>
+    <p class="section-lead">Каждая ступень наследует возможности предыдущей — привилегии бессрочны и не имеют срока действия.</p>
+
+    <div class="tier-rail">
+      <div class="line"></div>
+      <div class="tier-track">
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">01</div>
+          <div class="tier-gem" style="background:#4fd8b0;"></div>
+          <h3>HERO</h3>
+          <ul>
+            <li><code>/kit hero</code> уникальный кит</li>
+            <li><code>/craft</code> виртуальный верстак</li>
+            <li><code>/getpos</code> свои координаты</li>
+            <li>2 привата · 5 слотов аукциона</li>
+          </ul>
+          <div class="tier-price">Базовая ступень</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">02</div>
+          <div class="tier-gem" style="background:#57b8d8;"></div>
+          <h3>TITAN</h3>
+          <ul>
+            <li><code>/hat</code> надеть блок</li>
+            <li><code>/feed</code> восполнить голод</li>
+            <li><code>/rtpfar</code> РТП на большое расстояние</li>
+            <li>4 привата · 7 слотов аукциона</li>
+          </ul>
+          <div class="tier-price">Наследует HERO</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">03</div>
+          <div class="tier-gem" style="background:#8a7fe0;"></div>
+          <h3>AVENGER</h3>
+          <ul>
+            <li><code>/enderchest</code> эндер-сундук</li>
+            <li><code>/ignore</code> игнор игрока</li>
+            <li>6 домов · 8 приватов</li>
+            <li>9 слотов аукциона</li>
+          </ul>
+          <div class="tier-price">Наследует TITAN</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">04</div>
+          <div class="tier-gem" style="background:#d97dbf;"></div>
+          <h3>OVERLORD</h3>
+          <ul>
+            <li><code>/prefix</code> доступ к префиксам</li>
+            <li><code>/near</code> найти игрока</li>
+            <li>×2 валюты за убийства</li>
+            <li>12 домов · 16 приватов</li>
+          </ul>
+          <div class="tier-price">Наследует AVENGER</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">05</div>
+          <div class="tier-gem" style="background:#e0a24a;"></div>
+          <h3>MAGISTER</h3>
+          <ul>
+            <li><code>/nick</code> сменить ник</li>
+            <li><code>/invsee</code> доступ к инвентарю</li>
+            <li>32 дома · 48 приватов</li>
+            <li>22 слота аукциона</li>
+          </ul>
+          <div class="tier-price">Наследует OVERLORD</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">06</div>
+          <div class="tier-gem" style="background:#e05f4a;"></div>
+          <h3>IMPERATOR</h3>
+          <ul>
+            <li><code>/broadcast</code> объявления</li>
+            <li><code>/lightning</code> ударить молнией</li>
+            <li>×4 валюты, вход на полный сервер</li>
+            <li>48 домов · 96 приватов</li>
+          </ul>
+          <div class="tier-price">Наследует MAGISTER</div>
+        </div>
+
+        <div class="tier-card" data-reveal>
+          <div class="tier-order">07</div>
+          <div class="tier-gem" style="background:var(--gold-bright);"></div>
+          <h3>DRAGON</h3>
+          <ul>
+            <li><code>/fly</code> режим полёта</li>
+            <li><code>/grant</code> выдать донат</li>
+            <li><code>/sun</code> <code>/rain</code> <code>/day</code> <code>/night</code></li>
+            <li>999+ приватов, домов и слотов</li>
+          </ul>
+          <div class="tier-price">Вершина лестницы</div>
+        </div>
+
+      </div>
+    </div>
+
+    <p class="privileges-note">Полный список из 25+ привилегий, кейсов и способов оплаты — на странице <a href="https://reallyworld.ru/description" target="_blank" rel="noopener" style="color:var(--gold-bright);">«Описание привилегий»</a>. Услуги не являются физическим товаром и оказываются внутри игрового сервера.</p>
+  </div>
+</section>
+
+<section class="forum" id="forum">
+  <div class="container">
+    <span class="eyebrow">Сообщество</span>
+    <h2 class="section-title">Форум ReallyWorld</h2>
+    <p class="section-lead">Правила, барахолка, ивенты и техподдержка — всё на f.reallyworld.ru.</p>
+
+    <div class="forum-stats">
+      <div class="forum-stat" data-reveal><div class="n">9000</div><div class="l">Слотов на сервере</div></div>
+      <div class="forum-stat" data-reveal><div class="n">25+</div><div class="l">Уровней привилегий</div></div>
+      <div class="forum-stat" data-reveal><div class="n">1.16.5</div><div class="l">Версия клиента</div></div>
+      <div class="forum-stat" data-reveal><div class="n">24/7</div><div class="l">Работа сервера</div></div>
+    </div>
+
+    <div class="forum-categories">
+      <a class="cat-card" href="https://f.reallyworld.ru/tags/%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0/" target="_blank" rel="noopener" data-reveal>
+        <h3>Правила проекта</h3>
+        <p>Что можно и что нельзя на сервере — читай перед входом.</p>
+      </a>
+      <a class="cat-card" href="https://reallyworld.ru/description" target="_blank" rel="noopener" data-reveal>
+        <h3>Описание привилегий</h3>
+        <p>Полный список возможностей каждой ступени и кейсов.</p>
+      </a>
+      <a class="cat-card" href="https://reallyworld.ru/pymentMethods" target="_blank" rel="noopener" data-reveal>
+        <h3>Способы оплаты</h3>
+        <p>Как пополнить баланс и оформить покупку привилегии.</p>
+      </a>
+      <a class="cat-card" href="https://reallyworld.ru/support" target="_blank" rel="noopener" data-reveal>
+        <h3>Поддержка</h3>
+        <p>Связь с администрацией по вопросам покупок и игры.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="community">
+  <div class="container">
+    <span class="eyebrow">Будь на связи</span>
+    <h2 class="section-title">Присоединяйся прямо сейчас</h2>
+    <p>Новости, ивенты и связь с администрацией — в наших каналах.</p>
+    <div class="social-row">
+      <a href="https://vk.com/reallyworlds" target="_blank" rel="noopener">VK-сообщество</a>
+      <a href="https://discord.gg/reallyworld" target="_blank" rel="noopener">Discord-сервер</a>
+      <a href="https://www.youtube.com/channel/UCb5oqCZ4AfmfXbgHsfei0tQ" target="_blank" rel="noopener">YouTube-канал</a>
+      <a href="https://f.reallyworld.ru" target="_blank" rel="noopener">Форум</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>ReallyWorld</h4>
+        <p>Minecraft сервер и магазин привилегий. Играй, отыгрывай роль, строй свой мир вместе с сообществом.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Проект</h4>
+        <ul>
+          <li><a href="https://f.reallyworld.ru/tags/%D0%BF%D1%80%D0%B0%D0%B2%D0%B8%D0%BB%D0%B0/" target="_blank" rel="noopener">Правила</a></li>
+          <li><a href="https://reallyworld.ru/description" target="_blank" rel="noopener">Описание привилегий</a></li>
+          <li><a href="https://reallyworld.ru/pymentMethods" target="_blank" rel="noopener">Способы оплаты</a></li>
+          <li><a href="https://reallyworld.ru/anydesk" target="_blank" rel="noopener">Проверка через AnyDesk</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Сообщество</h4>
+        <ul>
+          <li><a href="https://f.reallyworld.ru" target="_blank" rel="noopener">Форум</a></li>
+          <li><a href="https://vk.com/reallyworlds" target="_blank" rel="noopener">VK</a></li>
+          <li><a href="https://discord.gg/reallyworld" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="https://www.youtube.com/channel/UCb5oqCZ4AfmfXbgHsfei0tQ" target="_blank" rel="noopener">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="footer-col footer-legal">
+        <h4>Реквизиты</h4>
+        <p>ИП Кондратьев Михаил Сергеевич<br>
+        ИНН: 780446233080<br>
+        ОГРНИП: 321784700352257<br>
+        admin@reallyworld.me (ПН–ПТ 10:00–18:00 МСК)</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 ReallyWorld. Все права защищены. Проект не связан с Mojang AB; коммерческая деятельность соответствует политике Mojang AB.</p>
+      <div>
+        <a href="https://reallyworld.ru/public_offer.pdf" target="_blank" rel="noopener">Договор оферты</a>
+        <a href="https://reallyworld.ru/privacy.pdf" target="_blank" rel="noopener">Политика конфиденциальности</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
